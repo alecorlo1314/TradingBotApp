@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="TradingBotApp.Vistas.BotConfigPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:editors="clr-namespace:Syncfusion.Maui.Inputs;assembly=Syncfusion.Maui.Inputs"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:TradingBotApp.ViewModels"
+    Title="BotConfigPage"
+    x:DataType="vm:BotConfigViewModel"
+    BackgroundColor="{StaticResource BgPrincipal}">
+
+    <!--  COLOR DE FONDO CON RADIAL  -->
+    <ContentPage.Background>
+        <RadialGradientBrush Center="0.8,0.4" Radius="1.0">
+            <GradientStop Offset="0.0" Color="#001710" />
+            <GradientStop Offset="0.3" Color="{StaticResource BgPrincipal}" />
+        </RadialGradientBrush>
+    </ContentPage.Background>
+
+    <!--  REGISTRO DE CONVERTERS DE TOOLKIT  -->
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:IsStringNotNullOrEmptyConverter x:Key="IsStringNotNullOrEmptyConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24" Spacing="32">
+
+            <!--  ENCABEZADO  -->
+            <StackLayout Spacing="4">
+                <Label Style="{StaticResource TituloLabel}" Text="Configurar Bot" />
+                <Label Style="{StaticResource LabelDescripcion}" Text="Define cómo quieres que opere el bot" />
+            </StackLayout>
+
+            <!--  TARJETA CONFIGURACIÓN DEL BOT  -->
+            <Border Style="{StaticResource CardFrame}">
+
+                <VerticalStackLayout Spacing="16">
+
+                    <!--  SIMBOLO  -->
+                    <Grid
+                        RowDefinitions="Auto,Auto"
+                        RowSpacing="8"
+                        VerticalOptions="Center">
+                        <Label
+                            Grid.Row="0"
+                            Style="{StaticResource LabelSubtitulo1}"
+                            Text="SÍMBOLO"
+                            TextColor="#BACBBF" />
+                        <Border
+                            Grid.Row="1"
+                            Padding="8,4"
+                            BackgroundColor="{StaticResource BgSurface}"
+                            Stroke="Transparent"
+                            StrokeShape="RoundRectangle 8">
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <Entry
+                                    Grid.Column="0"
+                                    HorizontalOptions="Start"
+                                    IsSpellCheckEnabled="False"
+                                    IsTextPredictionEnabled="False"
+                                    Placeholder="Ej: AAPL, TSLA, MSFT"
+                                    Style="{StaticResource EntryStyle}"
+                                    Text="{Binding Simbolo}" />
+                                <Image
+                                    Grid.Column="1"
+                                    Aspect="AspectFit"
+                                    HeightRequest="20"
+                                    HorizontalOptions="Center"
+                                    Source="icono_lupa.svg"
+                                    VerticalOptions="Center"
+                                    WidthRequest="20" />
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+                    <!--  CAPITAL  -->
+                    <VerticalStackLayout Spacing="8">
+                        <Label Style="{StaticResource LabelSubtitulo1}" TextColor="#BACBBF">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="CAPITAL POR OPERACIÓN: " />
+                                    <Span Text="{Binding Capital, StringFormat='${0:F2}'}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+
+                        <Slider
+                            Maximum="50"
+                            MaximumTrackColor="#1e2330"
+                            Minimum="1"
+                            MinimumTrackColor="{StaticResource AccentGreen}"
+                            Value="{Binding Capital}" />
+                    </VerticalStackLayout>
+
+                    <!--  STOP LOSS  -->
+                    <VerticalStackLayout Spacing="6">
+                        <Label Style="{StaticResource LabelSubtitulo1}" TextColor="#BACBBF">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="STOP-LOSS: " />
+                                    <Span Text="{Binding StopLoss, StringFormat='${0:F2}'}" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+                        <Slider
+                            Maximum="20"
+                            MaximumTrackColor="#1e2330"
+                            Minimum="0.5"
+                            MinimumTrackColor="{StaticResource AccentOrange}"
+                            Value="{Binding StopLoss}" />
+                    </VerticalStackLayout>
+
+                    <!--  MODO  -->
+                    <Grid
+                        RowDefinitions="Auto,Auto"
+                        RowSpacing="8"
+                        VerticalOptions="Center">
+                        <Label
+                            Grid.Row="0"
+                            Style="{StaticResource LabelSubtitulo1}"
+                            Text="MODO"
+                            TextColor="#BACBBF" />
+                        <Border
+                            Grid.Row="1"
+                            Padding="4,0"
+                            BackgroundColor="{StaticResource BgSurface}"
+                            Stroke="Transparent"
+                            StrokeShape="RoundRectangle 8">
+                            <editors:SfComboBox
+                                BackgroundColor="Transparent"
+                                DropDownBackground="{StaticResource BgSurface}"
+                                DropDownCornerRadius="8"
+                                DropDownIconColor="#6B7280"
+                                DropDownItemFontFamily="InterMedium"
+                                DropDownItemFontSize="16"
+                                DropDownItemTextColor="{StaticResource TextPrimary}"
+                                FontSize="16"
+                                IsClearButtonVisible="False"
+                                IsEditable="False"
+                                ItemsSource="{Binding Modos}"
+                                Placeholder="Seleccione un modo"
+                                PlaceholderColor="{StaticResource TextMuted}"
+                                SelectedDropDownItemBackground="#BACBBF"
+                                SelectedIndex="{Binding IndiceModo}"
+                                Stroke="Transparent"
+                                TextColor="{StaticResource TextPrimary}" />
+                        </Border>
+                    </Grid>
+
+                    <!--  INTERVALO  -->
+                    <VerticalStackLayout Spacing="6">
+                        <Label Style="{StaticResource LabelSubtitulo1}" TextColor="#BACBBF">
+                            <Label.FormattedText>
+                                <FormattedString>
+                                    <Span Text="INTERVALO: cada " />
+                                    <Span Text="{Binding IntervaloMinutos, StringFormat='{0}'}" />
+                                    <Span Text=" min" />
+                                </FormattedString>
+                            </Label.FormattedText>
+                        </Label>
+
+                        <Slider
+                            Maximum="60"
+                            MaximumTrackColor="#1e2330"
+                            Minimum="1"
+                            MinimumTrackColor="{StaticResource AccentBlue}"
+                            Value="{Binding IntervaloMinutos}" />
+
+                    </VerticalStackLayout>
+
+                </VerticalStackLayout>
+            </Border>
+
+            <!--  BOTONES  -->
+            <Button
+                Command="{Binding IniciarBotCommand}"
+                IsEnabled="{Binding EstaCargando, Converter={StaticResource InvertedBoolConverter}}"
+                IsVisible="{Binding BotCorriendo, Converter={StaticResource InvertedBoolConverter}}"
+                Style="{StaticResource PrimaryButton}"
+                Text="▶  Iniciar Bot" />
+            <Button
+                Command="{Binding DetenerBotCommand}"
+                IsEnabled="{Binding EstaCargando, Converter={StaticResource InvertedBoolConverter}}"
+                IsVisible="{Binding BotCorriendo}"
+                Style="{StaticResource DangerButton}"
+                Text="■  Detener Bot" />
+
+            <!--  ESTADO MENSAJE  -->
+            <Border IsVisible="{Binding EstadoMensaje, Converter={StaticResource IsStringNotNullOrEmptyConverter}}" Style="{StaticResource CardFrame}">
+                <Label
+                    FontFamily="InterRegular"
+                    FontSize="14"
+                    Text="{Binding EstadoMensaje}"
+                    TextColor="{StaticResource TextSecondary}" />
+            </Border>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

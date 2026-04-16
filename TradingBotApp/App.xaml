@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<Application
+    x:Class="TradingBotApp.App"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:behaviors="clr-namespace:TradingBotApp.Converts"
+    xmlns:local="clr-namespace:TradingBotApp">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Resources/Styles/Colors.xaml" />
+                <ResourceDictionary Source="Resources/Styles/Styles.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!--  REGISTRO DE BEHAVIORS  -->
+            <behaviors:InvertedBoolConverter x:Key="InvertedBoolConverter" />
+            <behaviors:BotCorriendoConverter x:Key="BotCorriendoConverter" />
+            <behaviors:DividirCienConverter x:Key="DividirCienConverter" />
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

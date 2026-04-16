@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="TradingBotApp.Vistas.OperacionesPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:dto="clr-namespace:TraidingBotApp.Aplicacion.DTOs;assembly=TraidingBotApp.Aplicacion"
+    xmlns:vm="clr-namespace:TradingBotApp.ViewModels"
+    Title="OperacionesPage"
+    x:DataType="vm:OperacionesViewModel">
+
+    <!--  COLOR DE FONDO CON RADIAL  -->
+    <ContentPage.Background>
+        <RadialGradientBrush Center="0.8,0.4" Radius="1.0">
+            <GradientStop Offset="0.0" Color="#001710" />
+            <GradientStop Offset="0.3" Color="{StaticResource BgPrincipal}" />
+        </RadialGradientBrush>
+    </ContentPage.Background>
+
+    <RefreshView
+        BackgroundColor="Transparent"
+        Command="{Binding CargarCommand}"
+        IsRefreshing="{Binding EstaCargando}"
+        RefreshColor="{StaticResource AccentGreen}">
+        <VerticalStackLayout Padding="24,32" Spacing="16">
+
+            <!--  ENCABEZADO  -->
+            <StackLayout Spacing="4">
+                <Label Style="{StaticResource TituloLabel}" Text="Historial" />
+                <Label Style="{StaticResource LabelDescripcion}" Text="Últimas 20 operaciones ejecutadas" />
+            </StackLayout>
+
+            <!--  ESTADO VACIO  -->
+            <Border IsVisible="{Binding EstaVacio}" Style="{StaticResource CardFrame}">
+                <Label
+                    FontFamily="InterRegular"
+                    FontSize="14"
+                    HorizontalTextAlignment="Center"
+                    Text="Sin operaciones aún. El bot ejecutará órdenes automáticamente."
+                    TextColor="{StaticResource TextMuted}" />
+            </Border>
+
+            <!--  LISTA DE OPERACIONES  -->
+            <CollectionView ItemsSource="{Binding Operaciones}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="dto:OperacionDto">
+                        <Border
+                            Margin="0,0,0,8"
+                            HeightRequest="82"
+                            Stroke="#1E2330"
+                            StrokeThickness="1"
+                            Style="{StaticResource CardFrame}">
+                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="16">
+
+                                <!--  ESTADO DE LA OPERACION  -->
+                                <Border
+                                    Grid.Column="0"
+                                    Padding="4"
+                                    BackgroundColor="{Binding ColorLado}"
+                                    Stroke="Transparent"
+                                    StrokeShape="RoundRectangle 6"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        FontFamily="PoppinsSemiBold"
+                                        FontSize="12"
+                                        Text="{Binding LadoFormateado}"
+                                        TextColor="#0A0C10" />
+                                </Border>
+
+                                <!--  INFORMACION  -->
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                    <Label
+                                        FontFamily="PoppinsSemiBold"
+                                        FontSize="15"
+                                        Text="{Binding Simbolo}"
+                                        TextColor="White" />
+                                    <Label>
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <FormattedString.Spans>
+                                                    <Span
+                                                        FontFamily="InterRegular"
+                                                        FontSize="11"
+                                                        Style="{StaticResource LabelSubtitulo1}"
+                                                        Text="{Binding FechaFormateada}" />
+                                                    <Span
+                                                        FontFamily="InterRegular"
+                                                        FontSize="11"
+                                                        Style="{StaticResource LabelSubtitulo1}"
+                                                        Text=" • " />
+                                                    <Span
+                                                        FontFamily="InterRegular"
+                                                        FontSize="11"
+                                                        Style="{StaticResource LabelSubtitulo1}"
+                                                        Text="{Binding HoraFormateada}" />
+                                                </FormattedString.Spans>
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </VerticalStackLayout>
+
+                                <!--  PRECIO  -->
+                                <VerticalStackLayout
+                                    Grid.Column="2"
+                                    HorizontalOptions="End"
+                                    Spacing="2"
+                                    VerticalOptions="Center">
+                                    <Label
+                                        FontSize="15"
+                                        HorizontalOptions="End"
+                                        Style="{StaticResource LabelMonto2}"
+                                        Text="{Binding CantidadEjecutada, StringFormat='${0:F2}'}" />
+                                    <Label
+                                        FontFamily="InterRegular"
+                                        FontSize="11"
+                                        HorizontalOptions="End"
+                                        Style="{StaticResource MutedLabel}"
+                                        Text="{Binding PrecioPromedioEjecutado, StringFormat='{0:F4} acc'}" />
+                                </VerticalStackLayout>
+
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </RefreshView>
+</ContentPage>

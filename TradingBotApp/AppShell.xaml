@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="TradingBotApp.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:local="clr-namespace:TradingBotApp"
+    xmlns:views="clr-namespace:TradingBotApp.Vistas"
+    Title="TradingBotApp"
+    Shell.NavBarIsVisible="False">
+
+    <Shell.Resources>
+        <ResourceDictionary>
+            <Style TargetType="TabBar">
+                <Setter Property="Shell.TabBarBackgroundColor" Value="#1E2024" />
+                <Setter Property="Shell.TabBarForegroundColor" Value="#6EFFC0" />
+                <Setter Property="Shell.TabBarUnselectedColor" Value="#5A6070" />
+                <Setter Property="Shell.TabBarTitleColor" Value="#6EFFC0" />
+            </Style>
+        </ResourceDictionary>
+    </Shell.Resources>
+
+    <TabBar>
+
+        <Tab Title="Dashboard" Icon="icono_dashboard_menu.png">
+            <ShellContent ContentTemplate="{DataTemplate views:DashboardPage}" />
+        </Tab>
+
+        <Tab Title="Bot" Icon="icono_bot_menu.svg">
+            <ShellContent ContentTemplate="{DataTemplate views:BotConfigPage}" />
+        </Tab>
+
+        <Tab Title="Historial" Icon="icono_history_menu.svg">
+            <ShellContent ContentTemplate="{DataTemplate views:OperacionesPage}" />
+        </Tab>
+
+    </TabBar>
+
+</Shell>

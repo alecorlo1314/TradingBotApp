@@ -1,0 +1,14 @@
+<Solution>
+  <Folder Name="/Core/">
+    <Project Path="TraidingBotApp.Aplicacion/TraidingBotApp.Aplicacion.csproj" />
+    <Project Path="TraidingBotApp.Dominio/TraidingBotApp.Dominio.csproj" />
+  </Folder>
+  <Folder Name="/Infrastructure/">
+    <Project Path="TraidingBotApp.Infraestructura/TraidingBotApp.Infraestructura.csproj" />
+  </Folder>
+  <Folder Name="/Presentation/">
+    <Project Path="TradingBotApp/TradingBotApp.UI.csproj">
+      <Deploy Solution="Debug|*" />
+    </Project>
+  </Folder>
+</Solution>

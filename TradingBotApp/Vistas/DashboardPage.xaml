@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="TradingBotApp.Vistas.DashboardPage"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:charts="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
+    xmlns:dto="clr-namespace:TraidingBotApp.Aplicacion.DTOs;assembly=TraidingBotApp.Aplicacion"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:vm="clr-namespace:TradingBotApp.ViewModels"
+    Title="DashboardPage"
+    x:DataType="vm:DashboardViewModel"
+    BackgroundColor="{StaticResource BgPrincipal}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <toolkit:IsNotNullConverter x:Key="IsNotNullConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <!--  COLOR DE FONDO CON RADIAL  -->
+    <ContentPage.Background>
+        <RadialGradientBrush Center="0.8,0.4" Radius="1.0">
+            <GradientStop Offset="0.0" Color="#001710" />
+            <GradientStop Offset="0.3" Color="{StaticResource BgPrincipal}" />
+        </RadialGradientBrush>
+    </ContentPage.Background>
+
+    <!--  CONTENIDO PRINCIPAL  -->
+    <RefreshView
+        BackgroundColor="Transparent"
+        Command="{Binding CargarCommand}"
+        IsRefreshing="{Binding EstaCargando}"
+        RefreshColor="{StaticResource AccentGreen}">
+        <ScrollView>
+            <VerticalStackLayout Padding="16" Spacing="24">
+
+                <!--  ENCABEZADO  -->
+                <Label Style="{StaticResource TituloLabel}" Text="Trading Bot" />
+
+                <!--  TARJETA BALANCE CUENTA  -->
+                <Border Style="{StaticResource CardFrame}">
+                    <VerticalStackLayout Spacing="12">
+
+                        <!--  VALOR DEL PORTAFOLIO  -->
+                        <Label Style="{StaticResource LabelSubtitulo1}" Text="VALOR DEL PORTAFOLIO" />
+                        <Label Style="{StaticResource LabelMonto1}" Text="{Binding ValorPortafolio, StringFormat='${0:N2}'}" />
+
+                        <!--  EFECTIVO Y PODER DE COMPRA  -->
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="16">
+
+                            <VerticalStackLayout Grid.Column="0">
+                                <Label Style="{StaticResource LabelSubtitulo2}" Text="EFECTIVO" />
+                                <Label Style="{StaticResource LabelMonto2}" Text="{Binding Efectivo, StringFormat='${0:N2}'}" />
+                            </VerticalStackLayout>
+
+                            <VerticalStackLayout Grid.Column="1">
+                                <Label Style="{StaticResource LabelSubtitulo2}" Text="PODER DE COMPRA" />
+                                <Label Style="{StaticResource LabelMonto2}" Text="{Binding PoderCompra, StringFormat='${0:N2}'}" />
+                            </VerticalStackLayout>
+
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!--  TARJETA ESTADO DEL BOT  -->
+                <Border Style="{StaticResource CardFrame}">
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="16">
+                        <Border
+                            Grid.Column="0"
+                            BackgroundColor="#1E2024"
+                            HeightRequest="48"
+                            Stroke="#3B4A41"
+                            StrokeShape="RoundRectangle 8"
+                            WidthRequest="48">
+
+                            <!--  ICONO BOT  -->
+                            <Image
+                                HeightRequest="24"
+                                HorizontalOptions="Center"
+                                Source="icono_bot_menu.svg"
+                                VerticalOptions="Center"
+                                WidthRequest="24">
+                                <Image.Behaviors>
+                                    <toolkit:IconTintColorBehavior TintColor="{StaticResource AccentGreen}" />
+                                </Image.Behaviors>
+                            </Image>
+                        </Border>
+
+                        <!--  NOMBRE DEL ACTIVO Y MENSAJE  -->
+                        <VerticalStackLayout
+                            Grid.Column="1"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Center">
+                            <Label Style="{StaticResource LabelMonto2}" Text="{Binding BotSimbolo}" />
+                            <Label
+                                FontFamily="InterRegular"
+                                FontSize="12"
+                                Text="{Binding BotCorriendo, Converter={StaticResource BotCorriendoConverter}}"
+                                TextColor="#BACBBF" />
+                        </VerticalStackLayout>
+
+                        <Border
+                            Grid.Column="2"
+                            Padding="8,0"
+                            BackgroundColor="{Binding SenalBackGroundColor}"
+                            HeightRequest="28"
+                            Stroke="{Binding SenalColor}"
+                            StrokeShape="RoundRectangle 50">
+
+                            <Label
+                                FontFamily="InterSemiBold"
+                                FontSize="12"
+                                HorizontalOptions="Center"
+                                Text="{Binding Senal}"
+                                TextColor="{Binding SenalColor}"
+                                VerticalOptions="Center" />
+                        </Border>
+                    </Grid>
+                </Border>
+
+                <!--  INDICADORES RSI + MACD  -->
+                <Border IsVisible="{Binding Indicadores, Converter={StaticResource IsNotNullConverter}}" Style="{StaticResource CardFrame}">
+                    <VerticalStackLayout Spacing="12">
+
+                        <Label
+                            Style="{StaticResource LabelSubtitulo1}"
+                            Text="INDICADORES TÉCNICOS"
+                            TextColor="#BACBBF" />
+
+                        <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+
+                            <!--  RSI  -->
+                            <Border
+                                Grid.Column="0"
+                                Padding="12"
+                                BackgroundColor="{StaticResource BgSurface}"
+                                Stroke="Transparent"
+                                StrokeShape="RoundRectangle 10">
+                                <VerticalStackLayout Spacing="8">
+                                    <Label Style="{StaticResource LabelSubtitulo2}" Text="RSI" />
+
+                                    <!--  Valor RSI  -->
+                                    <Label
+                                        FontFamily="PoppinsSemiBold"
+                                        FontSize="26"
+                                        Text="{Binding Indicadores.Rsi, StringFormat='{0:F1}'}"
+                                        TextColor="{Binding Indicadores.RsiColor}" />
+
+                                    <!--  Descripción RSI  -->
+                                    <Label
+                                        Style="{StaticResource LabelSubtitulo1}"
+                                        Text="{Binding Indicadores.RsiDescripcion}"
+                                        TextColor="{Binding Indicadores.RsiColor}" />
+
+                                    <!--  Barra de progreso RSI 0-100  -->
+                                    <ProgressBar Progress="{Binding Indicadores.Rsi, Converter={StaticResource DividirCienConverter}}" ProgressColor="{Binding Indicadores.RsiColor}" />
+                                </VerticalStackLayout>
+                            </Border>
+
+                            <!--  MACD  -->
+                            <Border
+                                Grid.Column="1"
+                                Padding="12"
+                                BackgroundColor="{StaticResource BgSurface}"
+                                Stroke="Transparent"
+                                StrokeShape="RoundRectangle 10">
+                                <VerticalStackLayout Spacing="8">
+                                    <Label Style="{StaticResource LabelSubtitulo2}" Text="MACD" />
+                                    <Label
+                                        FontFamily="PoppinsSemiBold"
+                                        FontSize="18"
+                                        Text="{Binding Indicadores.Macd, StringFormat='{0:F4}'}"
+                                        TextColor="{StaticResource TextPrimary}" />
+                                    <Grid ColumnDefinitions="*,*">
+                                        <Label
+                                            Grid.Column="0"
+                                            HorizontalOptions="Start"
+                                            Style="{StaticResource LabelSubtitulo1}"
+                                            Text="HIST" />
+                                        <Label
+                                            Grid.Column="1"
+                                            HorizontalTextAlignment="End"
+                                            Style="{StaticResource LabelSubtitulo1}"
+                                            Text="{Binding Indicadores.MacdHist, StringFormat='{0:F4}'}"
+                                            TextColor="{Binding Indicadores.MacdHistColor}" />
+                                    </Grid>
+
+                                    <Grid ColumnDefinitions="*,*">
+                                        <Label
+                                            Grid.Column="0"
+                                            HorizontalTextAlignment="Start"
+                                            Style="{StaticResource LabelSubtitulo1}"
+                                            Text="SEÑAL" />
+                                        <Label
+                                            Grid.Column="1"
+                                            HorizontalTextAlignment="End"
+                                            Style="{StaticResource LabelSubtitulo1}"
+                                            Text="{Binding Indicadores.MacdSenal, StringFormat='{0:F4}'}" />
+                                    </Grid>
+                                </VerticalStackLayout>
+                            </Border>
+
+                        </Grid>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!--  GRÁFICA DE PRECIO  -->
+                <Border IsVisible="{Binding TieneGrafica}" Style="{StaticResource CardFrame}">
+                    <VerticalStackLayout Spacing="12">
+                        <Label
+                            Style="{StaticResource LabelSubtitulo1}"
+                            Text="PRECIO HISTÓRICO (3 meses)"
+                            TextColor="#BACBBF" />
+
+                        <charts:SfCartesianChart BackgroundColor="Transparent" HeightRequest="200">
+
+                            <charts:SfCartesianChart.ZoomPanBehavior>
+                                <charts:ChartZoomPanBehavior
+                                    EnableDirectionalZooming="True"
+                                    EnablePanning="True"
+                                    EnablePinchZooming="True" />
+                            </charts:SfCartesianChart.ZoomPanBehavior>
+
+                            <charts:SfCartesianChart.XAxes>
+                                <charts:CategoryAxis AutoScrollingDelta="3" LabelStyle="{charts:ChartAxisLabelStyle TextColor='#5a6070', FontFamily='InterMedium', FontSize='9'}" />
+                            </charts:SfCartesianChart.XAxes>
+                            <charts:SfCartesianChart.YAxes>
+                                <charts:NumericalAxis LabelStyle="{charts:ChartAxisLabelStyle TextColor='#5a6070', FontFamily='InterMedium', FontSize='9'}" ShowMajorGridLines="False" />
+                            </charts:SfCartesianChart.YAxes>
+
+                            <charts:SplineSeries
+                                EnableAnimation="True"
+                                EnableTooltip="True"
+                                Fill="#00e5a0"
+                                ItemsSource="{Binding HistorialPrecios}"
+                                StrokeWidth="2"
+                                XBindingPath="Fecha"
+                                YBindingPath="Cierre" />
+                        </charts:SfCartesianChart>
+                    </VerticalStackLayout>
+                </Border>
+
+                <!--  POSICIONES  -->
+                <Label
+                    Margin="0,8,0,0"
+                    Style="{StaticResource LabelSubtitulo2}"
+                    Text="POSICIONES ABIERTAS" />
+                <CollectionView ItemsSource="{Binding Posiciones}">
+
+                    <!--  VISTA VACIA  -->
+                    <CollectionView.EmptyView>
+                        <StackLayout>
+                            <Label
+                                HorizontalOptions="Center"
+                                Style="{StaticResource LabelPrimaryStyle}"
+                                Text="No hay posiciones abiertas"
+                                TextColor="White"
+                                VerticalOptions="Start" />
+                        </StackLayout>
+                    </CollectionView.EmptyView>
+
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="dto:PosicionDto">
+
+                            <!--  TARJETA POSICION  -->
+                            <Border Margin="0,0,0,8" Style="{StaticResource CardFrame}">
+
+                                <Grid ColumnDefinitions="*,Auto">
+
+                                    <!--  SIMBOLO Y CANTIDA CON PRECIO  -->
+                                    <VerticalStackLayout Grid.Column="0">
+                                        <Label
+                                            FontFamily="PoppinsSemiBold"
+                                            FontSize="18"
+                                            Text="{Binding Simbolo}" />
+                                        <Label
+                                            FontFamily="InterMedium"
+                                            FontSize="12"
+                                            Style="{StaticResource MutedLabel}">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="Cantidad " />
+                                                    <Span Text="{Binding Cantidad, StringFormat='{0:F4}'}" />
+                                                    <Span Text=" * " />
+                                                    <Span Text="Precio prom " />
+                                                    <Span Text="{Binding PrecioEntradaPromedio, StringFormat='${0:F2}'}" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+
+                                    </VerticalStackLayout>
+                                    <VerticalStackLayout Grid.Column="1" HorizontalOptions="End">
+                                        <Label
+                                            FontFamily="PoppinsSemiBold"
+                                            FontSize="18"
+                                            HorizontalOptions="End"
+                                            Text="{Binding GananciaPerdidaFormateada}"
+                                            TextColor="{Binding ColorGananciaPerdida}" />
+                                        <Label
+                                            FontFamily="InterSemiBold"
+                                            FontSize="12"
+                                            HorizontalOptions="End"
+                                            Text="{Binding GananciaPerdidaPctFormateada}"
+                                            TextColor="{Binding ColorGananciaPerdida}" />
+                                    </VerticalStackLayout>
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>
