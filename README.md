@@ -1,3 +1,5 @@
+<img src="./assets/imagen_app_trading.svg">
+
 # 📱 TradingBotApp
 
 > Aplicación móvil de trading algorítmico construida con **.NET MAUI**, conectada a un backend **FastAPI** en la nube que utiliza indicadores técnicos **RSI + MACD** y un modelo de redes neuronales **LSTM** para generar señales de compra y venta automáticas.
