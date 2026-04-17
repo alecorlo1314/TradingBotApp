@@ -1,4 +1,4 @@
-﻿namespace TradingBotApp;
+﻿namespace TradingBotApp.Config_Problemas;
 
 public static class CrashLogger
 {
