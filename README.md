@@ -1,4 +1,4 @@
-<img src="./aAssets/imagen_app_trading.svg">
+<img src="TradingBotApp/Assets/imagen_app_trading.svg">
 
 # 📱 TradingBotApp
 
